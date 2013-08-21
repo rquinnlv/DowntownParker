@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Downtown Parker</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="garage_one">Garage 1</string>
+    <string name="garage_two">Garage 2</string>
+
+    <string name="floor_key">floors</string>
+    <string name="open_spots_key">open_spots</string>
+
+    <string name="floor_one">Floor 1</string>
+    <string name="floor_two">Floor 2</string>
+
+</resources>
