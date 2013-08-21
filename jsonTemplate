@@ -1,0 +1,24 @@
+{   
+    "garage_one": {
+        "floors": [
+            {
+                "floor_one": 25
+            },
+            {
+                "floor_two": 18
+            }
+        ],
+        "open_spots": 43
+    },
+    "garage_two": {
+        "floors": [
+            {
+                "floor_one": 5
+            },
+            {
+                "floor_two": 8
+            }
+        ],
+        "open_spots": 13
+    }
+}

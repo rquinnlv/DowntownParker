@@ -43,3 +43,5 @@ test-output/old/Suite/toc.html
 test-output/old/index.html
 
 test-output/old/Suite/testng.xml.html
+
+.DS_Store
