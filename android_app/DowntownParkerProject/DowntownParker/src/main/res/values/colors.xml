@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Application Colors -->
+    <color name="app_background_color">#262626</color>
+    <color name="spacer_color">#35bbff</color>
+
+    <!-- Text Colors -->
+    <color name="total_spaces_count_color">#3580ff</color>
+    <color name="total_spaces_descrip_color">#aaaaaa</color>
+
+    <color name="floor_spaces_name_color">#aaaaaa</color>
+    <color name="floor_spaces_count_color">#3580ff</color>
+    <color name="floor_spaces_descrip_color">#aaaaaa</color>
+</resources>

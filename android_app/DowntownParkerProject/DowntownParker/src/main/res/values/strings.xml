@@ -4,13 +4,38 @@
     <string name="app_name">Downtown Parker</string>
     <string name="action_settings">Settings</string>
 
-    <string name="garage_one">Garage 1</string>
-    <string name="garage_two">Garage 2</string>
-
+    <!-- JSON keys -->
     <string name="floor_key">floors</string>
-    <string name="open_spots_key">open_spots</string>
+    <string name="floor_open_spots_key">open_spots</string>
+    <string name="garage_open_spots_key">open_spots</string>
+    <string name="garage_open_spots_loading">Loading</string>
 
-    <string name="floor_one">Floor 1</string>
-    <string name="floor_two">Floor 2</string>
+    <!-- name descriptions -->
+    <string name="garage_count">3</string>
+    <string name="garage_north">North Garage</string>
+    <string name="garage_south">South Garage</string>
+    <string name="garage_parking_lot">Parking Lot</string>
+
+    <string name="floor_one_name">Floor 1</string>
+    <string name="floor_two_name">Floor 2</string>
+    <string name="floor_three_name">Floor 3</string>
+    <string name="floor_four_name">Floor 4</string>
+    <string name="floor_five_name">Floor 5</string>
+    <string name="floor_six_name">Floor 6</string>
+    <string name="floor_seven_name">Floor 7</string>
+
+    <!-- UI strings -->
+    <string name="ui_total_spaces_descrip">Spaces Available</string>
+    <string name="ui_floor_spaces_descrip">Spaces</string>
+    <string name="title_activity_parkinglot_detail">Parkinglot Detail</string>
+    <string name="total_spaces_load_error">Error</string>
+
+    <string name="loading_title">Loading</string>
+    <string name="loading_message">Loading Parking Information</string>
+    <string name="loading_title_error">Loading Error</string>
+    <string name="loading_message_error">An error occurred loading parking information.</string>
+
+    <!-- Data Settings -->
+    <string name="parker_json_endpoint">http://ec2-54-213-174-112.us-west-2.compute.amazonaws.com:4567/getJson</string>
 
 </resources>

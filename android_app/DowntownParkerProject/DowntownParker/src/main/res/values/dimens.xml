@@ -2,4 +2,20 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="floor_left_margin">10dp</dimen>
+    <dimen name="floor_top_margin">0dp</dimen>
+    <dimen name="floor_right_margin">10dp</dimen>
+    <dimen name="floor_bottom_margin">20dp</dimen>
+
+    <!-- UI dimensions -->
+    <dimen name="spacer_height">2dip</dimen>
+
+    <!-- Text size dimensions -->
+    <dimen name="total_spots_count_text_size">72dp</dimen>
+    <dimen name="total_spots_descrip_text_size">24dp</dimen>
+
+    <dimen name="floor_spots_name_text_size">10dp</dimen>
+    <dimen name="floor_spots_count_text_size">24dp</dimen>
+    <dimen name="floor_spots_descrip_text_size">10dp</dimen>
 </resources>
