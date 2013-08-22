@@ -1,24 +1,3 @@
-{   
-    "garage_one": {
-        "floors": [
-            {
-                "floor_one": 25
-            },
-            {
-                "floor_two": 18
-            }
-        ],
-        "open_spots": 43
-    },
-    "garage_two": {
-        "floors": [
-            {
-                "floor_one": 5
-            },
-            {
-                "floor_two": 8
-            }
-        ],
-        "open_spots": 13
-    }
-}
+{ "garage_north": { "floors": [ { "name": "Floor 1", "spots_available": 25},{"name": "Floor 2","spots_available": 18} ], "open_spots": 43 },
+  "garage_south": { "floors": [ { "name": "Floor 1", "spots_available": 5 },{"name": "Floor 2","spots_available": 8 } ], "open_spots": 13 },
+  "parking_lot":  { "open_spots": 100 } }
