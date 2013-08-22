@@ -8,6 +8,8 @@ import com.zappos.downtown.parker.task.GarageDataCallback;
  */
 public interface GarageService {
 
+    public void refreshCache(final GarageDataCallback callback);
+
     public void getGarageData(final GarageDataCallback callback);
 
     public boolean isGarageDataAvailable();

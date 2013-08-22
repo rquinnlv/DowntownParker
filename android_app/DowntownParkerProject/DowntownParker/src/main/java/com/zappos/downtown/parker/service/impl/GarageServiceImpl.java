@@ -34,6 +34,12 @@ public class GarageServiceImpl implements GarageService {
      */
     private GarageServiceImpl() { }
 
+    @Override
+    public void refreshCache(final GarageDataCallback callback) {
+        cachedGarageData = null;
+        getGarageData(callback);
+    }
+
     /**
      * Retrieve the cached {@link GarageData} once it's ready.
      * @param callback the {@link GarageDataCallback} to call once the data is available
