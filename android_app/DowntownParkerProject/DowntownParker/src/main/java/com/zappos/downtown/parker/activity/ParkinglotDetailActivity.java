@@ -1,4 +1,4 @@
-package com.zappos.downtown.parker;
+package com.zappos.downtown.parker.activity;
 
 import java.util.HashSet;
 import java.util.Locale;
@@ -6,7 +6,10 @@ import java.util.Set;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,11 +24,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.zappos.downtown.parker.R;
 import com.zappos.downtown.parker.layout.FlowLayout;
 import com.zappos.downtown.parker.model.Floor;
 import com.zappos.downtown.parker.model.Garage;
-import com.zappos.downtown.parker.model.GarageInfo;
-import com.zappos.downtown.parker.task.RetrieveDataTask;
+import com.zappos.downtown.parker.model.GarageData;
+import com.zappos.downtown.parker.service.impl.GarageServiceImpl;
+import com.zappos.downtown.parker.task.GarageDataCallback;
 
 public class ParkinglotDetailActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -44,7 +49,9 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
      */
     ViewPager mViewPager;
 
-    private static GarageInfo garageInfo;
+    private static GarageData garageData;
+
+    private ProgressDialog progressDialog;
 
     private static final Set<ParkinglotDetailFragment> fragments =
             new HashSet<ParkinglotDetailFragment>(3);
@@ -93,13 +100,21 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        //start retrieving the garage information
-        new RetrieveDataTask(this,
-                getString(R.string.loading_title),
-                getString(R.string.loading_message),
-                getString(R.string.loading_title_error),
-                getString(R.string.loading_message_error))
-                .execute(getString(R.string.parker_json_endpoint));
+        showProgressDialog();
+
+        //retrieve the garage information
+        GarageServiceImpl.getInstance().getGarageData(new GarageDataCallback() {
+            @Override
+            public void onGarageDataAvailable(final GarageData garageData) {
+                hideProgressDialog();
+                setGarageData(garageData);
+            }
+
+            @Override
+            public void onException(final Exception e) {
+                showErrorDialog();
+            }
+        });
     }
 
     @Override
@@ -126,35 +141,59 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
 
     /**
      * Set the parking garage info
-     * @param garageInfo
+     * @param garageData
      */
-    public static void setGarageInfo(final GarageInfo garageInfo) {
-        ParkinglotDetailActivity.garageInfo = garageInfo;
+    public static void setGarageData(final GarageData garageData) {
+        ParkinglotDetailActivity.garageData = garageData;
 
         for (ParkinglotDetailActivity.ParkinglotDetailFragment fragment : fragments) {
             int garageNumber = fragment.getGarageNumber();
-            Garage garage = getGarage(garageInfo, garageNumber);
+            Garage garage = getGarage(garageData, garageNumber);
             fragment.setGarage(garage);
         }
     }
 
     /**
      * Get a {@link Garage} based on a garage number
-     * @param garageInfo the {@link GarageInfo} containing all the garages
+     * @param garageData the {@link com.zappos.downtown.parker.model.GarageData} containing all the garages
      * @param garageNumber the number of the {@link Garage} to get
      * @return the {@link Garage} corresponding to the garage number
      */
-    private static Garage getGarage(final GarageInfo garageInfo, final int garageNumber) {
+    private static Garage getGarage(final GarageData garageData, final int garageNumber) {
         switch (garageNumber){
             case 0:
-                return garageInfo.getNorthGarage();
+                return garageData.getNorthGarage();
             case 1:
-                return garageInfo.getSouthGarage();
+                return garageData.getSouthGarage();
             case 2:
-                return garageInfo.getParkingLot();
+                return garageData.getParkingLot();
         }
 
         return null;
+    }
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(getString(R.string.loading_title));
+        progressDialog.setMessage(getString(R.string.loading_message));
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
+
+    private void showErrorDialog() {
+        hideProgressDialog();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(getString(R.string.loading_message_error))
+                .setTitle(getString(R.string.loading_title_error))
+                .setCancelable(false)
+                .setNeutralButton("Well shucks", null);
+        alertDialogBuilder.create().show();
     }
 
     /**
@@ -200,8 +239,7 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
     }
 
     /**
-     * A dummy fragment representing a section of the app, but that simply
-     * displays dummy text.
+     * A Parkinglot Detail fragment representing a detail view of a parking lot.
      */
     public static class ParkinglotDetailFragment extends Fragment {
 
@@ -211,9 +249,6 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
          */
         public static final String ARG_GARAGE_NUMBER = "garage_number";
         private int garageNumber;
-
-        public ParkinglotDetailFragment() {
-        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -226,8 +261,8 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            if (garageInfo != null) {
-                setGarage(getGarage(garageInfo, garageNumber));
+            if (garageData != null) {
+                setGarage(getGarage(garageData, garageNumber));
             }
         }
 
@@ -258,7 +293,6 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
 
             LinearLayout tableLayout = (LinearLayout) getView().findViewById(R.id.individualFloorsTable);
             FlowLayout flowLayout = new FlowLayout(getActivity());
-            flowLayout.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
             if (garage != null && garage.getFloors() != null) {
                 for (Floor floor : garage.getFloors()) {

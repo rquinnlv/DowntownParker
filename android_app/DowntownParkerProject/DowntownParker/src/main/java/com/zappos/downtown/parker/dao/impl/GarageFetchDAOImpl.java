@@ -2,8 +2,10 @@ package com.zappos.downtown.parker.dao.impl;
 
 import android.util.Log;
 
-import com.zappos.downtown.parker.dao.ParkerDAO;
-import com.zappos.downtown.parker.model.GarageInfo;
+import com.zappos.downtown.parker.ParkingApp;
+import com.zappos.downtown.parker.R;
+import com.zappos.downtown.parker.dao.GarageFetchDAO;
+import com.zappos.downtown.parker.model.GarageData;
 import com.zappos.downtown.parker.model.exception.DaoException;
 
 import org.apache.http.HttpEntity;
@@ -18,33 +20,29 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import android.content.res.Resources;
+
 /**
- * Implementation of the {@link ParkerDAO} that retrieves data from the web
+ * Implementation of the {@link com.zappos.downtown.parker.dao.GarageFetchDAO} that retrieves data from the web
  */
-public class ParkerDAOImpl implements ParkerDAO {
+public class GarageFetchDAOImpl implements GarageFetchDAO {
 
-    private final String url;
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    /**
-     * Define a {@link ParkerDAO} with a provided URL from which to retrieve information
-     * @param url the URL from which to retrieve information
-     */
-    public ParkerDAOImpl(String url) {
-        this.url = url;
-    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public GarageInfo getGarageInfo() throws DaoException {
+    public GarageData getGarageInfo() throws DaoException {
+
+        final String url = ParkingApp.getContext().getString(R.string.parker_json_endpoint);
+
         InputStream jsonInputStream;
 
         try {
             jsonInputStream = retrieveStream(url);
         } catch (IOException e) {
-            String message = "Error for URL " + url;
+            final String message = "Error for URL " + url + ": " + e.getMessage();
             Log.w(getClass().getSimpleName(), message, e);
             throw new DaoException(message, e);
         }
@@ -52,10 +50,11 @@ public class ParkerDAOImpl implements ParkerDAO {
         Reader reader = new InputStreamReader(jsonInputStream);
 
         try {
-            return objectMapper.readValue(reader, GarageInfo.class);
+            return objectMapper.readValue(reader, GarageData.class);
         } catch (IOException e) {
-            Log.w(getClass().getSimpleName(), e.getMessage(), e);
-            throw new DaoException(e.getMessage(), e);
+            final String message = "Error for URL " + url + ": " + e.getMessage();
+            Log.w(getClass().getSimpleName(), message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -70,21 +69,14 @@ public class ParkerDAOImpl implements ParkerDAO {
         final DefaultHttpClient client = new DefaultHttpClient();
         final HttpGet getRequest = new HttpGet(url);
 
-        HttpResponse getResponse = null;
-        int statusCode = 0;
-        try {
-            getResponse = client.execute(getRequest);
-            statusCode = getResponse.getStatusLine().getStatusCode();
-        } catch(Throwable t) {
-            Log.e(getClass().getSimpleName(), t.getMessage(), t);
-        }
+        final HttpResponse getResponse = client.execute(getRequest);
+        final int statusCode = getResponse.getStatusLine().getStatusCode();
 
         if (statusCode != HttpStatus.SC_OK) {
             throw new IOException("Error " + statusCode + " for URL " + url);
         }
 
-        HttpEntity getResponseEntity = getResponse.getEntity();
-        return getResponseEntity.getContent();
+        return getResponse.getEntity().getContent();
     }
 
 }

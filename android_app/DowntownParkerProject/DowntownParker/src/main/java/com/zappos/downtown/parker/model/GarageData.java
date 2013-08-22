@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 /**
  * This model class represents a collection of parking garage structure
  */
-public class GarageInfo {
+public class GarageData {
 
     @JsonProperty("garage north")
     private Garage northGarage;
@@ -43,9 +43,9 @@ public class GarageInfo {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GarageInfo)) return false;
+        if (!(o instanceof GarageData)) return false;
 
-        GarageInfo that = (GarageInfo) o;
+        GarageData that = (GarageData) o;
 
         if (northGarage != null ? !northGarage.equals(that.northGarage) : that.northGarage != null)
             return false;
@@ -67,7 +67,7 @@ public class GarageInfo {
 
     @Override
     public String toString() {
-        return "GarageInfo{" +
+        return "GarageData{" +
                 "northGarage=" + northGarage +
                 ", southGarage=" + southGarage +
                 ", parkingLot=" + parkingLot +
