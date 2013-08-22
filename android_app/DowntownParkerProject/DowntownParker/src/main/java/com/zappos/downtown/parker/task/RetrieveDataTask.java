@@ -3,7 +3,6 @@ package com.zappos.downtown.parker.task;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.net.LocalServerSocket;
 import android.os.AsyncTask;
 import android.util.Log;
 

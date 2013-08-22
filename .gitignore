@@ -1,5 +1,9 @@
 android_app/DowntownParkerProject/.idea
 android_app/DowntownParkerProject/.gradle
+*.iml
+android_app/DowntownParkerProject/out/
+android_app/DowntownParkerProject/DowntownParker/gen
+android_app/DowntownParkerProject/DowntownParker/src/main/gen
 
 /eclipse-bin
 
