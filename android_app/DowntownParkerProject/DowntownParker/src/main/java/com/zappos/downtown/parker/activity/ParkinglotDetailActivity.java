@@ -53,6 +53,11 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
     private static final Set<ParkinglotDetailFragment> fragments =
             new HashSet<ParkinglotDetailFragment>(3);
 
+    public static final int NORTH_GARAGE_TAB_POSITION = 0;
+    public static final int SOUTH_GARAGE_TAB_POSITION = 1;
+    public static final int PARKING_LOT_TAB_POSITION = 2;
+    private static int initiallySelectedTab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +118,9 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
                 ParkingApp.showErrorDialog(activity);
             }
         });
+
+        //set the currently selected tab
+        mViewPager.setCurrentItem(initiallySelectedTab);
     }
 
     @Override
@@ -130,11 +138,17 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) { }
 
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) { }
+
+    /**
+     * Set the tab that will be selected to start when the activity loads
+     * @param initiallySelectedTab the index of the tab.
+     */
+    public static void setInitiallySelectedTab(int initiallySelectedTab) {
+        ParkinglotDetailActivity.initiallySelectedTab = initiallySelectedTab;
     }
 
     /**

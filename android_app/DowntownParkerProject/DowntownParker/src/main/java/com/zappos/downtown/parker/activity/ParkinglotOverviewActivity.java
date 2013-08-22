@@ -26,6 +26,7 @@ public class ParkinglotOverviewActivity extends Activity {
         northLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ParkinglotDetailActivity.setInitiallySelectedTab(ParkinglotDetailActivity.NORTH_GARAGE_TAB_POSITION);
                 Intent intent = new Intent(view.getContext(), ParkinglotDetailActivity.class);
                 startActivityForResult(intent, 0);
             }
@@ -35,6 +36,7 @@ public class ParkinglotOverviewActivity extends Activity {
         southLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ParkinglotDetailActivity.setInitiallySelectedTab(ParkinglotDetailActivity.SOUTH_GARAGE_TAB_POSITION);
                 Intent intent = new Intent(view.getContext(), ParkinglotDetailActivity.class);
                 startActivityForResult(intent, 0);
             }
@@ -44,6 +46,7 @@ public class ParkinglotOverviewActivity extends Activity {
         parkingLotLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ParkinglotDetailActivity.setInitiallySelectedTab(ParkinglotDetailActivity.PARKING_LOT_TAB_POSITION);
                 Intent intent = new Intent(view.getContext(), ParkinglotDetailActivity.class);
                 startActivityForResult(intent, 0);
             }
