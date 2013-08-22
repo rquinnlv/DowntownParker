@@ -1,7 +1,7 @@
 { "garage north":
-    { "floors": [  {"name": "Floor 1", "spots_available": 2 },
+    { "floors": [  {"name": "Floor 1", "spots_available": 8 },
                    {"name": "Floor 2", "spots_available": 2 },
-                   {"name": "Floor 3", "spots_available": 1} ], "open_spots": 5 },
+                   {"name": "Floor 3", "spots_available": 1} ], "open_spots": 11 },
     "garage south":
     { "floors": [  {"name": "Floor 1", "spots_available": 2 },
                    {"name": "Floor 2", "spots_available": 5 },

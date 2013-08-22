@@ -4,6 +4,11 @@ import os
 #import json
 
 
+def cropFoto():
+        os.popen("sh cropFoto.sh")
+
+
+
 def createJSON(spotList):
 
     #This is hack code, replace later with json code when we have the rest in
@@ -32,7 +37,7 @@ def createJSON(spotList):
 
 def diffIt(pic1, pic2):
 
-    commandLine = 'perceptualdiff -threshold 8000 %s %s' % (pic1, pic2)
+    commandLine = 'perceptualdiff -threshold 150 %s %s' % (pic1, pic2)
     o = os.popen(commandLine)
     response = o.readline()[0:4]
     o.close()
@@ -46,13 +51,14 @@ def countSpots():
     spots = []
     count = 0
 
-    for x in range(0, 4):
+    for x in range(0, 18):
         original = 'org_%s.jpg' % x
         cut = 'cut_%s.jpg' % x
         spots.append(diffIt(original, cut))
         rmCommand = "rm cut_%s.jpg" % x
         os.popen(rmCommand)
 
+    print spots
     #Add code to the below loop when we want to build a map
 
     for x in spots:
@@ -68,6 +74,7 @@ def createFile():
 
 if __name__ == "__main__":
 
+    cropFoto()
     createFile()
     scpCommand = "scp -o IdentityFile=~/.ssh/teamkey.pem garages.json ubuntu@ec2-54-213-174-112.us-west-2.compute.amazonaws.com:~/garages.json"
     o = os.popen(scpCommand)
