@@ -1,6 +1,5 @@
 package com.zappos.downtown.parker.model;
 
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;

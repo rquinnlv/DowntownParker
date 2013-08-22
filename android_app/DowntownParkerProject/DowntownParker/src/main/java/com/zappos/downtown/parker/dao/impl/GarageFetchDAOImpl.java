@@ -8,7 +8,6 @@ import com.zappos.downtown.parker.dao.GarageFetchDAO;
 import com.zappos.downtown.parker.model.GarageData;
 import com.zappos.downtown.parker.model.exception.DaoException;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
