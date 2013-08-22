@@ -48,8 +48,6 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
      */
     ViewPager mViewPager;
 
-    private static GarageData garageData;
-
     private static final Set<ParkinglotDetailFragment> fragments =
             new HashSet<ParkinglotDetailFragment>(3);
 
@@ -103,14 +101,21 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
         super.onPostCreate(savedInstanceState);
 
         final Activity activity = this;
-        ParkingApp.showProgressDialog(activity);
+        if (!GarageServiceImpl.getInstance().isGarageDataAvailable()) {
+            ParkingApp.showProgressDialog(activity);
+        }
 
         //retrieve the garage information
         GarageServiceImpl.getInstance().getGarageData(new GarageDataCallback() {
             @Override
             public void onGarageDataAvailable(final GarageData garageData) {
                 ParkingApp.hideProgressDialog();
-                setGarageData(garageData);
+
+                for (ParkinglotDetailActivity.ParkinglotDetailFragment fragment : fragments) {
+                    int garageNumber = fragment.getGarageNumber();
+                    Garage garage = ParkingApp.getGarage(garageData, garageNumber);
+                    fragment.setGarage(garage);
+                }
             }
 
             @Override
@@ -149,20 +154,6 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
      */
     public static void setInitiallySelectedTab(int initiallySelectedTab) {
         ParkinglotDetailActivity.initiallySelectedTab = initiallySelectedTab;
-    }
-
-    /**
-     * Set the parking garage info
-     * @param garageData
-     */
-    public static void setGarageData(final GarageData garageData) {
-        ParkinglotDetailActivity.garageData = garageData;
-
-        for (ParkinglotDetailActivity.ParkinglotDetailFragment fragment : fragments) {
-            int garageNumber = fragment.getGarageNumber();
-            Garage garage = ParkingApp.getGarage(garageData, garageNumber);
-            fragment.setGarage(garage);
-        }
     }
 
     @Override
@@ -242,9 +233,24 @@ public class ParkinglotDetailActivity extends FragmentActivity implements Action
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            if (garageData != null) {
-                setGarage(ParkingApp.getGarage(garageData, garageNumber));
+            final Activity activity = getActivity();
+            if (!GarageServiceImpl.getInstance().isGarageDataAvailable()) {
+                ParkingApp.showProgressDialog(activity);
             }
+
+            //retrieve the garage information
+            GarageServiceImpl.getInstance().getGarageData(new GarageDataCallback() {
+                @Override
+                public void onGarageDataAvailable(final GarageData garageData) {
+                    ParkingApp.hideProgressDialog();
+                    setGarage(ParkingApp.getGarage(garageData, garageNumber));
+                }
+
+                @Override
+                public void onException(final Exception e) {
+                    ParkingApp.showErrorDialog(activity);
+                }
+            });
         }
 
         @Override

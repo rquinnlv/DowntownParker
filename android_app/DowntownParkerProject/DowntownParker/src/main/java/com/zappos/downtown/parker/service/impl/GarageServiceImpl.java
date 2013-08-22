@@ -5,6 +5,7 @@ import com.zappos.downtown.parker.service.GarageService;
 import com.zappos.downtown.parker.task.GarageDataCallback;
 import com.zappos.downtown.parker.task.RetrieveGarageDataTask;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,9 @@ import java.util.Set;
 public class GarageServiceImpl implements GarageService {
 
     private GarageData cachedGarageData;
+    private Date cacheUpdatedTime;
+    private static final long CACHE_TIMEOUT = 30000;
+
     private Set<GarageDataCallback> callbacks = new HashSet<GarageDataCallback>();
 
     private static GarageService instance;
@@ -61,7 +65,9 @@ public class GarageServiceImpl implements GarageService {
      */
     @Override
     public synchronized boolean isGarageDataAvailable() {
-        return cachedGarageData != null;
+        return (cachedGarageData != null &&
+                cacheUpdatedTime != null &&
+                cacheUpdatedTime.getTime() + CACHE_TIMEOUT > new Date().getTime());
     }
 
     /**
@@ -71,6 +77,7 @@ public class GarageServiceImpl implements GarageService {
         new RetrieveGarageDataTask().execute(new GarageDataCallback() {
             @Override
             public void onGarageDataAvailable(final GarageData garageData) {
+                cacheUpdatedTime = new Date();
                 cachedGarageData = garageData;
                 executeCallbacks();
             }
