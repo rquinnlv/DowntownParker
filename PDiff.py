@@ -58,18 +58,19 @@ def countSpots():
         rmCommand = "rm cut_%s.jpg" % x
         os.popen(rmCommand)
 
-    print spots
     #Add code to the below loop when we want to build a map
 
     for x in spots:
         count = count + 1 if x == 'PASS' else count
+
+    print count, spots
 
     return count
 
 
 def createFile():
     f = open('garages.json', 'w')
-    f.write(createJSON([countSpots(), 2, 1, 2, 5, 2, 5, 3, 0, 2, 29]))
+    f.write(createJSON([countSpots(), 0, 0, 2, 5, 2, 5, 3, 0, 2, 29]))
     f.close
 
 if __name__ == "__main__":
@@ -78,9 +79,3 @@ if __name__ == "__main__":
     createFile()
     scpCommand = "scp -o IdentityFile=~/.ssh/teamkey.pem garages.json ubuntu@ec2-54-213-174-112.us-west-2.compute.amazonaws.com:~/garages.json"
     o = os.popen(scpCommand)
-
-    #l = len(sys.argv)
-    # if l == 4:
-    #     print(sys.argv[0], sys.argv[1])
-    # else:
-    #     print "Something"
